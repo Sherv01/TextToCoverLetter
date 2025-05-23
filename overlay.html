@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cover Letter Input</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Helvetica, sans-serif;
+      height: 100vh;
+      background: rgba(24, 24, 28, 0.92);
+      background-size: 800% 800%;
+      animation: gradientBG 20s ease infinite;
+      overflow: hidden;
+    }
+
+    /* Glassmorphic Overlay */
+    .cnp-overlay-content {
+      position: fixed;
+      font-family: Helvetica, sans-serif;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 420px;
+      padding: 28px 24px;
+      border-radius: 20px;
+      background: rgba(24, 24, 28, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(25px);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.5);
+      color: #fff;
+      text-align: center;
+      z-index: 999999;
+      overflow: hidden;
+    animation: fadeIn 0.5s ease-out, gradientBG 20s ease infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Shimmer Effect (plays only once) */
+    .cnp-overlay-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-25deg);
+      animation: shimmer 3s 1 forwards;
+      pointer-events: none;
+    }
+    @keyframes shimmer {
+      0%   { transform: translateX(-100%) skewX(-25deg); }
+      100% { transform: translateX(110%) skewX(-25deg); }
+    }
+
+    /* Animated Title Gradient */
+    .cnp-overlay-content h2 {
+      margin: 0 0 18px;
+      font-size: 1.8em;
+      font-weight: 700;
+      background: linear-gradient(-45deg, #6366f1, #06b6d4, #22d3ee, #6366f1);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientText 5s ease infinite;
+    }
+    @keyframes gradientText {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Textarea Styling */
+    textarea {
+      font-family: Helvetica, sans-serif;
+      width: 100%;
+      height: 180px;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 20px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+    textarea:focus {
+      border-color:#06b6d4;
+    }
+
+    /* Buttons with Animated Gradient */
+    button {
+      margin: 6px;
+      font-family: Helvetica, sans-serif;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #111;
+      background: linear-gradient(45deg, #36d1dc, #5b86e5);
+      background-size: 200% 200%;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(54,209,220,0.3);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: gradientBtn 4s ease infinite;
+    }
+    @keyframes gradientBtn {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    button:hover {
+      transform: scale(1.05) translateY(-1px);
+      box-shadow: 0 6px 20px rgba(54,209,220,0.6);
+    }
+
+    /* Close Button Special */
+    #close-btn {
+      background: linear-gradient(45deg, #ff4e50, #f9d423);
+      color: #fff;
+    }
+
+    #cnp-overlay-file-input {
+      display: none;
+    }
+    /* Close Button as Red X in Corner */
+    #close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      background: transparent;
+      color: #ff4e50;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.6em;
+      font-weight: bold;
+      line-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: none;
+      z-index: 1000;
+    }
+    #close-btn::before {
+      content: '✕';
+      font-size: 1em;
+      color: #ff4e50;
+      pointer-events: none;
+    }
+    #close-btn:hover {
+      background: rgba(255,78,80,0.12);
+      color: #fff;
+    }
+    /* Dark Mode Adaptation */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: rgba(0,0,0,0.95);
+      }
+      .cnp-overlay-content {
+        background: rgba(24, 24, 28, 0.92);
+        backdrop-filter: blur(1px);
+        border-color: rgba(255,255,255,0.1);
+      }
+      textarea {
+        background: rgba(255,255,255,0.05);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cnp-overlay-content">
+    <h2>Cover Letter</h2>
+    <textarea id="cover-letter" placeholder="Type your cover letter here..."></textarea>
+    <div>
+      <button id="submit-btn">Generate & Submit PDF</button>
+      <button id="download-btn">Download PDF</button>
+      <button id="upload-btn">Upload File</button>
+      <button id="close-btn"></button>
+      <input type="file" id="cnp-overlay-file-input" accept="application/pdf">
+    </div>
+  </div>
+</body>
+</html>
